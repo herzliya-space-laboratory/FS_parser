@@ -1,4 +1,5 @@
 import glob
+import os
 from datetime import datetime
 
 
@@ -97,11 +98,23 @@ def get_rawData_CSVfiles(dir_path):
             #print()
     return ret_str[0:-1]
 
+def saveAsFile():
+    file_name = "FS.txt"
+    with open(file_name, "w+") as file:
+        file.write(string)
+
 
 print("Location of CSV files to parse: ")
 path = input()
 FRAM_data = get_rawData_CSVfiles(path)
 #print(FRAM_data)
 #print()
-IdidIt = FS_data(bytearray.fromhex(FRAM_data.replace('-', '')))
-print(IdidIt.convert_str())
+FS_db = FS_data(bytearray.fromhex(FRAM_data.replace('-', '')))
+string = FS_db.convert_str()
+print(string)
+
+print()
+print("Do you what to print the data into a file: Y/N")
+answer = input()
+if (answer == "Y" or answer == "y"):
+    saveAsFile()
