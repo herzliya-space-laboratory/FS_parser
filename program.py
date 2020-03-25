@@ -19,8 +19,10 @@ class C_FILE:
         self.size_of_element = int.from_bytes(self.raw[0:4], byteorder='little', signed=True)
         temp = self.raw[4:4 + find_indexOfFirstNull(self.raw[4:19])]
         self.name = temp.decode("utf-8")
-        self.creation_time = int.from_bytes(self.raw[20:24], byteorder='little', signed=False)
-        self.last_time_modified = int.from_bytes(self.raw[24:28], byteorder='little', signed=False)
+        ts = int.from_bytes(self.raw[20:24], byteorder='little', signed=False)
+        self.creation_time = datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+        ts = int.from_bytes(self.raw[24:28], byteorder='little', signed=False)
+        self.last_time_modified = datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
         self.num_of_files = int.from_bytes(self.raw[28:32], byteorder='little', signed=True)
 
     def convert_str(self):
